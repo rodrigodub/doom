@@ -2,7 +2,7 @@
 # Doom
 # Script to adjust read an RFE email
 #
-# v0.02
+# v0.03
 # # for ticket #1
 #
 # Rodrigo Nobrega
@@ -24,11 +24,21 @@ class ReadRFE(object):
     Reads contents of an RFE Outlook message file
     """
     def __init__(self, file):
-        self.contents = open('{}{}'.format(DIRECTORY, file), 'r', encoding = 'ISO-8859-1')
+        self.contents = self.readcontents(file)
 
-    def output(self):
+    def readcontents(self, file):
+        a = ''
+        b = open(r'{}{}'.format(DIRECTORY, file), 'r', encoding = 'ISO-8859-1')
+        # b = open(r'{}{}'.format(DIRECTORY, file), 'r', encoding='ANSI')
+        for i in b:
+            a = a + r'{}\n'.format(i)
+        b.close()
+        return a
+
+    def outputcustomer(self):
         for i in self.contents:
-            print(i)
+            if 'Customer Name' in i:
+                print(i)
 
 
 # main loop
@@ -38,7 +48,8 @@ def main():
     print('                     Reads and processes contents of RFE')
     print('=============================================================================\n')
     rfe = ReadRFE('SI-81772.msg')
-    rfe.output()
+    print(rfe.contents)
+    # rfe.outputcustomer()
 
 
 # main, calling main loop
