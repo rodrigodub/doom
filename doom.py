@@ -2,11 +2,11 @@
 # Doom
 # Script to adjust read an RFE email
 #
-# v0.03
+# v0.04
 # # for ticket #1
 #
 # Rodrigo Nobrega
-# 20180514-
+# 20180514-20180516
 #################################################
 
 # import modules
