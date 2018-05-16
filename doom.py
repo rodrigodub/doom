@@ -2,7 +2,7 @@
 # Doom
 # Script to adjust read an RFE email
 #
-# v0.04
+# v0.05
 # # for ticket #1
 #
 # Rodrigo Nobrega
