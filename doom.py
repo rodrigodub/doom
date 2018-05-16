@@ -2,7 +2,7 @@
 # Doom
 # Script to adjust read an RFE email
 #
-# v0.06
+# v0.07
 # # for ticket #1
 #
 # Rodrigo Nobrega
@@ -17,8 +17,8 @@
 # global variables
 DIRECTORY = './examples/'
 OUTPUTRFE = 'Customer Name:\n{}\n\n' \
-            'Site:\n\n\n' \
-            'Who has identified the requirement?:\n\n\n' \
+            'Site:\n{}\n\n' \
+            'Who has identified the requirement?:\n{}\n\n' \
             'Role:\n\n\n' \
             'acQuire RFE Owner:\n\n\n' \
             'Original SI#:\n\n\n' \
@@ -35,8 +35,16 @@ class ReadRFE(object):
     """
     def __init__(self, file):
         self.contents = self.readcontents(file)
-        self.customer = self.outputcustomer()
-
+        self.customer = self.returnstring('Customer Name', 'Site')
+        self.site = self.returnstring('Site', 'Who has identified')
+        self.who = self.returnstring('Who has identified the requirement?', 'Role')
+        # self.customer = self.returnstring('Customer Name', 'Site')
+        # self.customer = self.returnstring('Customer Name', 'Site')
+        # self.customer = self.returnstring('Customer Name', 'Site')
+        # self.customer = self.returnstring('Customer Name', 'Site')
+        # self.customer = self.returnstring('Customer Name', 'Site')
+        # self.customer = self.returnstring('Customer Name', 'Site')
+        # self.customer = self.returnstring('Customer Name', 'Site')
 
     def readcontents(self, file):
         a = ''
@@ -46,8 +54,8 @@ class ReadRFE(object):
         b.close()
         return a
 
-    def outputcustomer(self):
-        return self.contents.split('Customer Name')[1].split('Site')[0].replace('\n', '').strip()
+    def returnstring(self, fromtring, tostring):
+        return self.contents.split(fromtring)[1].split(tostring)[0].replace('\n', '').strip()
 
 
 # main loop
@@ -56,8 +64,10 @@ def main():
     print('                                    Doom')
     print('                     Reads and processes contents of RFE')
     print('=============================================================================\n')
-    rfe = ReadRFE('SI-81772.msg')
-    print(OUTPUTRFE.format(rfe.customer))
+    # rfe = ReadRFE('SI-77948.msg')
+    rfe = ReadRFE('SI-79383.msg')
+    # rfe = ReadRFE('SI-81772.msg')
+    print(OUTPUTRFE.format(rfe.customer, rfe.site, rfe.who))
 
 
 # main, calling main loop
