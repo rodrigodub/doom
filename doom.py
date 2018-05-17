@@ -2,8 +2,8 @@
 # Doom
 # Script to adjust read an RFE email
 #
-# v0.08
-# # for ticket #1
+# v0.10
+# for tickets #4, #5
 #
 # Rodrigo Nobrega
 # 20180514-20180517
@@ -15,7 +15,8 @@
 
 
 # global variables
-DIRECTORY = './examples/'
+# DIRECTORY = './examples/'
+DIRECTORY = 'C:/Users/rnobrega/Desktop/'
 OUTPUTRFE = 'Customer Name:\n{}\n\n' \
             'Site:\n{}\n\n' \
             'Who has identified the requirement?:\n{}\n\n' \
@@ -69,9 +70,9 @@ def main():
     print('                                    Doom')
     print('                     Reads and processes contents of RFE')
     print('=============================================================================\n')
-    rfe = ReadRFE('SI-77948.msg')
-    # rfe = ReadRFE('SI-79383.msg')
-    # rfe = ReadRFE('SI-81772.msg')
+    f = input('RFE email filename (*.msg): ')
+    print('\n-----------------------------------------------------------------------------\n')
+    rfe = ReadRFE(f)
     print(OUTPUTRFE.format(rfe.customer, rfe.site, rfe.user, rfe.role, rfe.owner, rfe.si, rfe.version,
                            rfe.userstory, rfe.description, rfe.workaround, rfe.additionalcomments))
 
