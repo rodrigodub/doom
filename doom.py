@@ -2,11 +2,11 @@
 # Doom
 # Script to adjust read an RFE email
 #
-# v0.10
-# for tickets #4, #5
+# v0.11
+# for tickets #7
 #
 # Rodrigo Nobrega
-# 20180514-20180517
+# 20180514-20180523
 #################################################
 
 # import modules
@@ -30,7 +30,7 @@ OUTPUTRFE = 'Customer Name:\n{}\n\n' \
 
 
 # define Timeshift class
-class ReadRFE(object):
+class Readreport(object):
     """
     Reads contents of an RFE Outlook message file
     """
@@ -70,11 +70,11 @@ def main():
     print('                                    Doom')
     print('                     Reads and processes contents of RFE')
     print('=============================================================================\n')
-    f = input('RFE email filename (*.msg): ')
+    f = input('Email filename (*.msg): ')
     print('\n-----------------------------------------------------------------------------\n')
-    rfe = ReadRFE(f)
-    print(OUTPUTRFE.format(rfe.customer, rfe.site, rfe.user, rfe.role, rfe.owner, rfe.si, rfe.version,
-                           rfe.userstory, rfe.description, rfe.workaround, rfe.additionalcomments))
+    report = Readreport(f)
+    print(OUTPUTRFE.format(report.customer, report.site, report.user, report.role, report.owner, report.si, report.version,
+                           report.userstory, report.description, report.workaround, report.additionalcomments))
 
 
 # main, calling main loop

@@ -1,2 +1,2 @@
 # doom
-Doom scrapes an RFE template
+Doom scrapes email RFE and Bug templates
