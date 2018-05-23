@@ -2,8 +2,8 @@
 # Doom
 # Script to adjust read an RFE email
 #
-# v0.15
-# for ticket #8
+# v0.16
+# for ticket #7
 #
 # Rodrigo Nobrega
 # 20180514-20180523
@@ -17,7 +17,9 @@ import os
 # global variables
 # DIRECTORY = './examples/'
 DIRECTORY = 'C:/Users/rnobrega/Desktop/'
-OUTPUTRFE = 'Customer Name:\n{}\n\n' \
+OUTPUTRFE = 'Summary:\n{}\n' \
+            '-----------------------------------------------------------------------------\n' \
+            'Customer Name:\n{}\n\n' \
             'Site:\n{}\n\n' \
             'Who has identified the requirement?:\n{}\n\n' \
             'Role:\n{}\n\n' \
@@ -25,6 +27,15 @@ OUTPUTRFE = 'Customer Name:\n{}\n\n' \
             'Original SI#:\n{}\n\n' \
             'GIM Suite Version:\n{}\n\n' \
             'Description:\n{}\n{}\n\n' \
+            'Workaround:\n{}\n\n' \
+            'Additional Comments:\n{}\n\n'
+OUTPUTBUG = 'Summary:\n{}\n' \
+            '-----------------------------------------------------------------------------\n' \
+            'acQuire Contact (Bug Owner):\n{}\n\n' \
+            'Customer:\n{}\n\n' \
+            'Database:\n{}\n\n' \
+            'Description:\n{}\n{}\n\n' \
+            'Replication Steps:\n{}\n\n' \
             'Workaround:\n{}\n\n' \
             'Additional Comments:\n{}\n\n'
 
@@ -41,22 +52,32 @@ class Readreport(object):
         self.contents = self.readcontents()
         self.option = option
         # RFE details
-        self.customer = self.returnstring('Customer Name', 'Site')
-        self.site = self.returnstring('Site', 'Who has identified')
-        self.user = self.returnstring('Who has identified the requirement?', 'Role')
-        self.role = self.returnstring('Role', 'GIM Suite Version')
-        self.version = self.returnstring('GIM Suite Version', 'Triage Details')
-        self.owner = self.returnstring('acQuire RFE Owner', 'SI#')
-        self.si = self.returnstring('SI#', 'RFE Summary')
-        self.userstory = self.returnstring('User Story', 'Description')
-        self.description = self.returnstring('Description', 'Problem Type')
-        self.workaround = self.returnstring('Workaround(s)\n\n\n\n \n\n\n\n[Implication]', 'Additional Comments')
-        self.additionalcomments = self.returnstring('Additional Comments', 'v4.1')
-        self.impact1 = self.returnstring('Select Impact level (as rated by the customer)\n\n\n\n \n\n\n\n[Implication]', 'Describe the impact\n\n\n\n \n\n\n\n[Implication]')
-        self.impact2 = self.returnstring('Describe the impact\n\n\n\n \n\n\n\n[Implication]', 'Rate the level of impact to acQuire business\n\n\n\n(if applicable)')
-        self.impact3 = self.returnstring('Rate the level of impact to acQuire business\n\n\n\n(if applicable)', 'Can you quantify the impact:')
-        self.impact4 = self.returnstring('Can you quantify the impact:', 'Workaround(s)')
+        if self.option == 'R':
+            self.customer = self.returnstring('Customer Name', 'Site')
+            self.site = self.returnstring('Site', 'Who has identified')
+            self.user = self.returnstring('Who has identified the requirement?', 'Role')
+            self.role = self.returnstring('Role', 'GIM Suite Version')
+            self.version = self.returnstring('GIM Suite Version', 'Triage Details')
+            self.owner = self.returnstring('acQuire RFE Owner', 'SI#')
+            self.si = self.returnstring('SI#', 'RFE Summary')
+            self.userstory = self.returnstring('User Story', 'Description')
+            self.description = self.returnstring('Description', 'Problem Type')
+            self.workaround = self.returnstring('Workaround(s)\n\n\n\n \n\n\n\n[Implication]', 'Additional Comments')
+            self.additionalcomments = self.returnstring('Additional Comments', 'v4.1')
+            self.impact1 = self.returnstring('Select Impact level (as rated by the customer)\n\n\n\n \n\n\n\n[Implication]', 'Describe the impact\n\n\n\n \n\n\n\n[Implication]')
+            self.impact2 = self.returnstring('Describe the impact\n\n\n\n \n\n\n\n[Implication]', 'Rate the level of impact to acQuire business\n\n\n\n(if applicable)')
+            self.impact3 = self.returnstring('Rate the level of impact to acQuire business\n\n\n\n(if applicable)', 'Can you quantify the impact:')
+            self.impact4 = self.returnstring('Can you quantify the impact:', 'Workaround(s)')
         # Bug details
+        if self.option == 'B':
+            self.userstory = self.returnstring('Summary', 'Issue Type:')
+            self.customer = self.returnstring('Client:', 'Problem Description:')
+            self.owner = self.returnstring('acQuire Contact:', 'Client:')
+            self.database = self.returnstring('Database Information:', 'Replication Steps:')
+            self.description = self.returnstring('Problem Description:', 'Database Information:')
+            self.replication = self.returnstring('Replication Steps:', 'Workaround (If applicable):')
+            self.workaround = self.returnstring('Workaround (If applicable):', 'Additional Comments:')
+            self.additionalcomments = self.returnstring('Additional Comments:', 'acQuire Technology Solutions Pty Ltd')
 
     def readcontents(self):
         a = ''
@@ -71,8 +92,12 @@ class Readreport(object):
 
     def outputfile(self):
         f = open(r'{}{}'.format(DIRECTORY, self.outputfilename), 'w')
-        f.write(OUTPUTRFE.format(self.customer, self.site, self.user, self.role, self.owner, self.si, self.version,
-                                 self.userstory, self.description, self.workaround, self.additionalcomments))
+        if self.option == 'R':
+            f.write(OUTPUTRFE.format(self.userstory, self.customer, self.site, self.user, self.role, self.owner, self.si,
+                                 self.version, self.userstory, self.description, self.workaround, self.additionalcomments))
+        elif self.option == 'B':
+            f.write(OUTPUTBUG.format(self.userstory, self.owner, self.customer, self.database, self.userstory,
+                                     self.description, self.replication, self.workaround, self.additionalcomments))
         f.close()
 
 
@@ -92,9 +117,6 @@ def main():
         os.system('start {}{}'.format(DIRECTORY, report.outputfilename))
     else:
         print('The report must be a Bug or an RFE.\nProgram finished.')
-    # report = Readreport(f)
-    # print(OUTPUTRFE.format(report.customer, report.site, report.user, report.role, report.owner, report.si, report.version,
-    #                        report.userstory, report.description, report.workaround, report.additionalcomments))
 
 
 # main, calling main loop
