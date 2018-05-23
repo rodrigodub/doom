@@ -2,8 +2,8 @@
 # Doom
 # Script to adjust read an RFE email
 #
-# v0.12
-# for ticket #7
+# v0.14
+# for ticket #8
 #
 # Rodrigo Nobrega
 # 20180514-20180523
@@ -34,8 +34,13 @@ class Readreport(object):
     """
     Reads contents of an RFE Outlook message file
     """
-    def __init__(self, file):
-        self.contents = self.readcontents(file)
+    def __init__(self, file, option):
+        # report details
+        self.inputfilename = file
+        self.outputfilename = file.replace('.msg', '.txt')
+        self.contents = self.readcontents()
+        self.option = option
+        # RFE details
         self.customer = self.returnstring('Customer Name', 'Site')
         self.site = self.returnstring('Site', 'Who has identified')
         self.user = self.returnstring('Who has identified the requirement?', 'Role')
@@ -51,17 +56,24 @@ class Readreport(object):
         self.impact2 = self.returnstring('Describe the impact\n\n\n\n \n\n\n\n[Implication]', 'Rate the level of impact to acQuire business\n\n\n\n(if applicable)')
         self.impact3 = self.returnstring('Rate the level of impact to acQuire business\n\n\n\n(if applicable)', 'Can you quantify the impact:')
         self.impact4 = self.returnstring('Can you quantify the impact:', 'Workaround(s)')
+        # Bug details
 
-    def readcontents(self, file):
+    def readcontents(self):
         a = ''
-        b = open(r'{}{}'.format(DIRECTORY, file), 'r', encoding='ISO-8859-1')
+        b = open(r'{}{}'.format(DIRECTORY, self.inputfilename), 'r', encoding='ISO-8859-1')
         for i in b:
             a = a + '{}'.format(i.replace('\x00', ''))
         b.close()
         return a
 
-    def returnstring(self, fromtring, tostring):
-        return self.contents.split(fromtring)[1].split(tostring)[0].replace('\n', '').strip()
+    def returnstring(self, fromstring, tostring):
+        return self.contents.split(fromstring)[1].split(tostring)[0].replace('\n', '').strip()
+
+    def outputfile(self):
+        f = open(r'{}{}'.format(DIRECTORY, self.outputfilename), 'w')
+        f.write(OUTPUTRFE.format(self.customer, self.site, self.user, self.role, self.owner, self.si, self.version,
+                                 self.userstory, self.description, self.workaround, self.additionalcomments))
+        f.close()
 
 
 # main loop
@@ -70,13 +82,14 @@ def main():
     print('                                    Doom')
     print('                     Reads and processes contents of RFE')
     print('=============================================================================\n')
-    f = input('Email filename (*.msg) : ')
+    file = input('Email filename (*.msg) : ')
     option = input('Is this a Bug (B) or RFE (R) report? : ')
     print('\n-----------------------------------------------------------------------------\n')
     if option.upper() in ('B', 'R'):
-        print('OK')
+        report = Readreport(file, option.upper())
+        report.outputfile()
     else:
-        print('Not OK')
+        print('The report must be a Bug or an RFE.\nProgram finished.')
     # report = Readreport(f)
     # print(OUTPUTRFE.format(report.customer, report.site, report.user, report.role, report.owner, report.si, report.version,
     #                        report.userstory, report.description, report.workaround, report.additionalcomments))
