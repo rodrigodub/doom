@@ -2,15 +2,14 @@
 # Doom
 # Script to adjust read an RFE email
 #
-# v0.16
-# for ticket #7
+# v1.00
+# for ticket #9
 #
 # Rodrigo Nobrega
 # 20180514-20180523
 #################################################
 
 # import modules
-# import datetime
 import os
 
 
@@ -105,7 +104,7 @@ class Readreport(object):
 def main():
     print('\n=============================================================================')
     print('                                    Doom')
-    print('                     Reads and processes contents of RFE')
+    print('            Reads and processes contents of RFE and Bug reports')
     print('=============================================================================\n')
     file = input('Email filename (*.msg) : ')
     option = input('Is this a Bug (B) or RFE (R) report? : ')
@@ -115,6 +114,7 @@ def main():
         report.outputfile()
         os.system('start {}{}'.format(DIRECTORY, report.inputfilename))
         os.system('start {}{}'.format(DIRECTORY, report.outputfilename))
+        print('Opening files.\nProgram finished.')
     else:
         print('The report must be a Bug or an RFE.\nProgram finished.')
 
