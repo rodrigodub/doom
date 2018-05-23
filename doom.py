@@ -2,7 +2,7 @@
 # Doom
 # Script to adjust read an RFE email
 #
-# v0.14
+# v0.15
 # for ticket #8
 #
 # Rodrigo Nobrega
@@ -11,7 +11,7 @@
 
 # import modules
 # import datetime
-# import os
+import os
 
 
 # global variables
@@ -88,6 +88,8 @@ def main():
     if option.upper() in ('B', 'R'):
         report = Readreport(file, option.upper())
         report.outputfile()
+        os.system('start {}{}'.format(DIRECTORY, report.inputfilename))
+        os.system('start {}{}'.format(DIRECTORY, report.outputfilename))
     else:
         print('The report must be a Bug or an RFE.\nProgram finished.')
     # report = Readreport(f)
