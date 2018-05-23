@@ -2,8 +2,8 @@
 # Doom
 # Script to adjust read an RFE email
 #
-# v0.11
-# for tickets #7
+# v0.12
+# for ticket #7
 #
 # Rodrigo Nobrega
 # 20180514-20180523
@@ -70,11 +70,16 @@ def main():
     print('                                    Doom')
     print('                     Reads and processes contents of RFE')
     print('=============================================================================\n')
-    f = input('Email filename (*.msg): ')
+    f = input('Email filename (*.msg) : ')
+    option = input('Is this a Bug (B) or RFE (R) report? : ')
     print('\n-----------------------------------------------------------------------------\n')
-    report = Readreport(f)
-    print(OUTPUTRFE.format(report.customer, report.site, report.user, report.role, report.owner, report.si, report.version,
-                           report.userstory, report.description, report.workaround, report.additionalcomments))
+    if option.upper() in ('B', 'R'):
+        print('OK')
+    else:
+        print('Not OK')
+    # report = Readreport(f)
+    # print(OUTPUTRFE.format(report.customer, report.site, report.user, report.role, report.owner, report.si, report.version,
+    #                        report.userstory, report.description, report.workaround, report.additionalcomments))
 
 
 # main, calling main loop
