@@ -2,11 +2,11 @@
 # Doom
 # Script to adjust read an RFE email
 #
-# v1.00
-# for ticket #9
+# v1.03
+# for ticket #10
 #
 # Rodrigo Nobrega
-# 20180514-20180523
+# 20180514-20180528
 #################################################
 
 # import modules
@@ -39,7 +39,7 @@ OUTPUTBUG = 'Summary:\n{}\n' \
             'Additional Comments:\n{}\n\n'
 
 
-# define Timeshift class
+# define Readreport class
 class Readreport(object):
     """
     Reads contents of an RFE Outlook message file
@@ -52,42 +52,118 @@ class Readreport(object):
         self.option = option
         # RFE details
         if self.option == 'R':
-            self.customer = self.returnstring('Customer Name', 'Site')
-            self.site = self.returnstring('Site', 'Who has identified')
-            self.user = self.returnstring('Who has identified the requirement?', 'Role')
-            self.role = self.returnstring('Role', 'GIM Suite Version')
-            self.version = self.returnstring('GIM Suite Version', 'Triage Details')
-            self.owner = self.returnstring('acQuire RFE Owner', 'SI#')
-            self.si = self.returnstring('SI#', 'RFE Summary')
-            self.userstory = self.returnstring('User Story', 'Description')
-            self.description = self.returnstring('Description', 'Problem Type')
-            self.workaround = self.returnstring('Workaround(s)\n\n\n\n \n\n\n\n[Implication]', 'Additional Comments')
-            self.additionalcomments = self.returnstring('Additional Comments', 'v4.1')
-            self.impact1 = self.returnstring('Select Impact level (as rated by the customer)\n\n\n\n \n\n\n\n[Implication]', 'Describe the impact\n\n\n\n \n\n\n\n[Implication]')
-            self.impact2 = self.returnstring('Describe the impact\n\n\n\n \n\n\n\n[Implication]', 'Rate the level of impact to acQuire business\n\n\n\n(if applicable)')
-            self.impact3 = self.returnstring('Rate the level of impact to acQuire business\n\n\n\n(if applicable)', 'Can you quantify the impact:')
-            self.impact4 = self.returnstring('Can you quantify the impact:', 'Workaround(s)')
+            try:
+                self.customer = self.returnstring('Customer Name', 'Site').replace(r"\n'b'\n'b'\n'b'\n'b'", '')
+                # self.customer = self.returnstring('Customer Name', 'Site')
+            except IndexError:
+                self.customer = ''
+            try:
+                self.site = self.returnstring('Site', 'Who has identified')
+            except IndexError:
+                self.site = ''
+            try:
+                self.user = self.returnstring('Who has identified the requirement?', 'Role')
+            except IndexError:
+                self.user = ''
+            try:
+                self.role = self.returnstring('Role', 'GIM Suite Version')
+            except IndexError:
+                self.role = ''
+            try:
+                self.version = self.returnstring('GIM Suite Version', 'Triage Details')
+            except IndexError:
+                self.version = ''
+            try:
+                self.owner = self.returnstring('acQuire RFE Owner', 'SI#')
+            except IndexError:
+                self.owner = ''
+            try:
+                self.si = self.returnstring('SI#', 'RFE Summary')
+            except IndexError:
+                self.si = ''
+            try:
+                self.userstory = self.returnstring('User Story', 'Description')
+            except IndexError:
+                self.userstory = ''
+            try:
+                self.description = self.returnstring('Description', 'Problem Type')
+            except IndexError:
+                self.description = ''
+            try:
+                self.workaround = self.returnstring('Workaround(s)\n\n\n\n \n\n\n\n[Implication]', 'Additional Comments')
+            except IndexError:
+                self.workaround = ''
+            try:
+                self.additionalcomments = self.returnstring('Additional Comments', 'v4.1')
+            except IndexError:
+                self.additionalcomments = ''
+            try:
+                self.impact1 = self.returnstring('Select Impact level (as rated by the customer)\n\n\n\n \n\n\n\n[Implication]', 'Describe the impact\n\n\n\n \n\n\n\n[Implication]')
+            except IndexError:
+                self.impact1 = ''
+            try:
+                self.impact2 = self.returnstring('Describe the impact\n\n\n\n \n\n\n\n[Implication]', 'Rate the level of impact to acQuire business\n\n\n\n(if applicable)')
+            except IndexError:
+                self.impact2 = ''
+            try:
+                self.impact3 = self.returnstring('Rate the level of impact to acQuire business\n\n\n\n(if applicable)', 'Can you quantify the impact:')
+            except IndexError:
+                self.impact3 = ''
+            try:
+                self.impact4 = self.returnstring('Can you quantify the impact:', 'Workaround(s)')
+            except IndexError:
+                self.impact4 = ''
         # Bug details
         if self.option == 'B':
-            self.userstory = self.returnstring('Summary', 'Issue Type:')
-            self.customer = self.returnstring('Client:', 'Problem Description:')
-            self.owner = self.returnstring('acQuire Contact:', 'Client:')
-            self.database = self.returnstring('Database Information:', 'Replication Steps:')
-            self.description = self.returnstring('Problem Description:', 'Database Information:')
-            self.replication = self.returnstring('Replication Steps:', 'Workaround (If applicable):')
-            self.workaround = self.returnstring('Workaround (If applicable):', 'Additional Comments:')
-            self.additionalcomments = self.returnstring('Additional Comments:', 'acQuire Technology Solutions Pty Ltd')
+            try:
+                self.userstory = self.returnstring('Summary', 'Issue Type:')
+            except IndexError:
+                self.userstory = ''
+            try:
+                self.customer = self.returnstring('Client:', 'Problem Description:')
+            except IndexError:
+                self.customer = ''
+            try:
+                self.owner = self.returnstring('acQuire Contact:', 'Client:')
+            except IndexError:
+                self.owner = ''
+            try:
+                self.database = self.returnstring('Database Information:', 'Replication Steps:')
+            except IndexError:
+                self.database = ''
+            try:
+                self.description = self.returnstring('Problem Description:', 'Database Information:')
+            except IndexError:
+                self.description = ''
+            try:
+                self.replication = self.returnstring('Replication Steps:', 'Workaround (If applicable):')
+            except IndexError:
+                self.replication = ''
+            try:
+                self.workaround = self.returnstring('Workaround (If applicable):', 'Additional Comments:')
+            except IndexError:
+                self.workaround = ''
+            try:
+                self.additionalcomments = self.returnstring('Additional Comments:', 'acQuire Technology Solutions Pty Ltd')
+            except IndexError:
+                self.additionalcomments = ''
 
     def readcontents(self):
         a = ''
         b = open(r'{}{}'.format(DIRECTORY, self.inputfilename), 'r', encoding='ISO-8859-1')
         for i in b:
-            a = a + '{}'.format(i.replace('\x00', ''))
+            # a = a + r'{}'.format(i.replace('\x00', '').replace(r"\n'b'\n'b'\n'b'\n'b'", '').encode('utf-8'))
+            a = a + r'{}'.format(i.replace('\x00', '').encode('utf-8'))
+            # a = a + '{}'.format(i.replace('\x00', '').replace('\x84', '').replace('\x82', '')
+            #                     .replace('\x9d', '').replace('\x8f', '').replace('\x80', '')
+            #                     .replace('\x83', '').replace('\x90', '').replace('\x92', '').replace('\x99', ''))
+            # a = a + '{}'.format(i.encode('utf-8'))
         b.close()
         return a
 
     def returnstring(self, fromstring, tostring):
-        return self.contents.split(fromstring)[1].split(tostring)[0].replace('\n', '').strip()
+        return self.contents.split(fromstring)[1].split(tostring)[0].replace('\n', '').strip().replace(r"\n'b'\n'b'\n'b'\n'b'", '')
+        # return self.contents.split(fromstring)[1].split(tostring)[0].replace('\n', '').strip()
 
     def outputfile(self):
         f = open(r'{}{}'.format(DIRECTORY, self.outputfilename), 'w')

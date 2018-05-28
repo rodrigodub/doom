@@ -4,3 +4,4 @@
 .idea/vcs.xml
 .idea/workspace.xml
 .ipynb_checkpoints/Dev notebook-checkpoint.ipynb
+__pycache__/doom.cpython-36.pyc
