@@ -2,7 +2,7 @@
 # Doom
 # Script to adjust read an RFE email
 #
-# v1.03
+# v1.04
 # for ticket #10
 #
 # Rodrigo Nobrega
@@ -53,8 +53,7 @@ class Readreport(object):
         # RFE details
         if self.option == 'R':
             try:
-                self.customer = self.returnstring('Customer Name', 'Site').replace(r"\n'b'\n'b'\n'b'\n'b'", '')
-                # self.customer = self.returnstring('Customer Name', 'Site')
+                self.customer = self.returnstring('Customer Name', 'Site')
             except IndexError:
                 self.customer = ''
             try:
@@ -152,18 +151,12 @@ class Readreport(object):
         a = ''
         b = open(r'{}{}'.format(DIRECTORY, self.inputfilename), 'r', encoding='ISO-8859-1')
         for i in b:
-            # a = a + r'{}'.format(i.replace('\x00', '').replace(r"\n'b'\n'b'\n'b'\n'b'", '').encode('utf-8'))
             a = a + r'{}'.format(i.replace('\x00', '').encode('utf-8'))
-            # a = a + '{}'.format(i.replace('\x00', '').replace('\x84', '').replace('\x82', '')
-            #                     .replace('\x9d', '').replace('\x8f', '').replace('\x80', '')
-            #                     .replace('\x83', '').replace('\x90', '').replace('\x92', '').replace('\x99', ''))
-            # a = a + '{}'.format(i.encode('utf-8'))
         b.close()
         return a
 
     def returnstring(self, fromstring, tostring):
         return self.contents.split(fromstring)[1].split(tostring)[0].replace('\n', '').strip().replace(r"\n'b'\n'b'\n'b'\n'b'", '')
-        # return self.contents.split(fromstring)[1].split(tostring)[0].replace('\n', '').strip()
 
     def outputfile(self):
         f = open(r'{}{}'.format(DIRECTORY, self.outputfilename), 'w')
