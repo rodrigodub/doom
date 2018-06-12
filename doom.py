@@ -2,8 +2,8 @@
 # Doom
 # Script to adjust read an RFE email
 #
-# v1.04
-# for ticket #10
+# v1.05
+# for ticket #11
 #
 # Rodrigo Nobrega
 # 20180514-20180528
@@ -44,12 +44,12 @@ class Readreport(object):
     """
     Reads contents of an RFE Outlook message file
     """
-    def __init__(self, file, option):
+    def __init__(self, file):
         # report details
         self.inputfilename = file
         self.outputfilename = file.replace('.msg', '.txt')
         self.contents = self.readcontents()
-        self.option = option
+        self.option = self.returnoption()
         # RFE details
         if self.option == 'R':
             try:
@@ -168,6 +168,12 @@ class Readreport(object):
                                      self.description, self.replication, self.workaround, self.additionalcomments))
         f.close()
 
+    def returnoption(self):
+        if 'REQUEST FOR ENHANCEMENT (RFE)' in self.contents:
+            return 'R'
+        elif 'Bug User Story' in self.contents:
+            return 'B'
+
 
 # main loop
 def main():
@@ -176,16 +182,12 @@ def main():
     print('            Reads and processes contents of RFE and Bug reports')
     print('=============================================================================\n')
     file = input('Email filename (*.msg) : ')
-    option = input('Is this a Bug (B) or RFE (R) report? : ')
     print('\n-----------------------------------------------------------------------------\n')
-    if option.upper() in ('B', 'R'):
-        report = Readreport(file, option.upper())
-        report.outputfile()
-        os.system('start {}{}'.format(DIRECTORY, report.inputfilename))
-        os.system('start {}{}'.format(DIRECTORY, report.outputfilename))
-        print('Opening files.\nProgram finished.')
-    else:
-        print('The report must be a Bug or an RFE.\nProgram finished.')
+    report = Readreport(file)
+    report.outputfile()
+    os.system('start {}{}'.format(DIRECTORY, report.inputfilename))
+    os.system('start {}{}'.format(DIRECTORY, report.outputfilename))
+    print('Opening files.\nProgram finished.')
 
 
 # main, calling main loop
