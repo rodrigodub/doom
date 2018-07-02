@@ -2,7 +2,7 @@
 # Doom
 # Script to adjust read an RFE email
 #
-# v1.07
+# v1.08
 # for ticket #
 #
 # Rodrigo Nobrega
@@ -154,7 +154,9 @@ class Readreport(object):
         return a
 
     def returnstring(self, fromstring, tostring):
-        return self.contents.split(fromstring)[1].split(tostring)[0].replace('\n', '').strip().replace(r"\n'b'\n'b'\n'b'\n'b'", '')
+        return self.contents.split(fromstring)[1].split(tostring)[0].replace('\n', '').strip()\
+            .replace(r"\n'b'\n'b'\n'b'\n'b'", '').replace(r"\xc3\xb1", 'n').replace(r"\xc3\xa1", 'a')\
+            .replace(r" \x13 ", ' - ')
 
     def outputfile(self):
         f = open(r'{}'.format(self.outputfilename), 'w')
