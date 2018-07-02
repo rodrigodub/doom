@@ -2,11 +2,11 @@
 # Doom
 # Script to adjust read an RFE email
 #
-# v1.05
-# for ticket #11
+# v1.06
+# for ticket #
 #
 # Rodrigo Nobrega
-# 20180514-20180528
+# 20180514-20180702
 #################################################
 
 # import modules
@@ -14,8 +14,6 @@ import os
 
 
 # global variables
-# DIRECTORY = './examples/'
-DIRECTORY = 'C:/Users/rnobrega/Desktop/'
 OUTPUTRFE = 'Summary:\n{}\n' \
             '-----------------------------------------------------------------------------\n' \
             'Customer Name:\n{}\n\n' \
@@ -149,7 +147,7 @@ class Readreport(object):
 
     def readcontents(self):
         a = ''
-        b = open(r'{}{}'.format(DIRECTORY, self.inputfilename), 'r', encoding='ISO-8859-1')
+        b = open(r'{}'.format(self.inputfilename), 'r', encoding='ISO-8859-1')
         for i in b:
             a = a + r'{}'.format(i.replace('\x00', '').encode('utf-8'))
         b.close()
@@ -159,7 +157,7 @@ class Readreport(object):
         return self.contents.split(fromstring)[1].split(tostring)[0].replace('\n', '').strip().replace(r"\n'b'\n'b'\n'b'\n'b'", '')
 
     def outputfile(self):
-        f = open(r'{}{}'.format(DIRECTORY, self.outputfilename), 'w')
+        f = open(r'{}'.format(self.outputfilename), 'w')
         if self.option == 'R':
             f.write(OUTPUTRFE.format(self.userstory, self.customer, self.site, self.user, self.role, self.owner, self.si,
                                  self.version, self.userstory, self.description, self.workaround, self.additionalcomments))
@@ -181,12 +179,16 @@ def main():
     print('                                    Doom')
     print('            Reads and processes contents of RFE and Bug reports')
     print('=============================================================================\n')
-    file = input('Email filename (*.msg) : ')
+    directory = input('Email directory : ').replace('\\', '/')
+    if directory[-1:] != '/':
+        directory += '/'
+    filename = input('Email filename (*.msg) : ')
+    file = '{}{}'.format(directory, filename)
     print('\n-----------------------------------------------------------------------------\n')
     report = Readreport(file)
     report.outputfile()
-    os.system('start {}{}'.format(DIRECTORY, report.inputfilename))
-    os.system('start {}{}'.format(DIRECTORY, report.outputfilename))
+    os.system('start {}'.format(report.inputfilename))
+    os.system('start {}'.format(report.outputfilename))
     print('Opening files.\nProgram finished.')
 
 
