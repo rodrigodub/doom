@@ -2,7 +2,7 @@
 # Doom
 # Script to adjust read an RFE email
 #
-# v1.06
+# v1.07
 # for ticket #
 #
 # Rodrigo Nobrega
@@ -183,13 +183,15 @@ def main():
     if directory[-1:] != '/':
         directory += '/'
     filename = input('Email filename (*.msg) : ')
+    if filename[-4:].upper() != '.MSG':
+        filename += '.msg'
     file = '{}{}'.format(directory, filename)
     print('\n-----------------------------------------------------------------------------\n')
     report = Readreport(file)
     report.outputfile()
     os.system('start {}'.format(report.inputfilename))
     os.system('start {}'.format(report.outputfilename))
-    print('Opening files.\nProgram finished.')
+    print('Opening files.\nProgram finished.\n\n\n')
 
 
 # main, calling main loop
