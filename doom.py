@@ -2,11 +2,11 @@
 # Doom
 # Script to adjust read an RFE email
 #
-# v1.08
+# v1.10
 # for ticket #
 #
 # Rodrigo Nobrega
-# 20180514-20180702
+# 20180514-20180723
 #################################################
 
 # import modules
@@ -156,7 +156,7 @@ class Readreport(object):
     def returnstring(self, fromstring, tostring):
         return self.contents.split(fromstring)[1].split(tostring)[0].replace('\n', '').strip()\
             .replace(r"\n'b'\n'b'\n'b'\n'b'", '').replace(r"\xc3\xb1", 'n').replace(r"\xc3\xa1", 'a')\
-            .replace(r" \x13 ", ' - ')
+            .replace(r" \x13 ", ' - ').replace(r"\x18 ", "'").replace(r"\x19 ", "'")
 
     def outputfile(self):
         f = open(r'{}'.format(self.outputfilename), 'w')
@@ -181,19 +181,25 @@ def main():
     print('                                    Doom')
     print('            Reads and processes contents of RFE and Bug reports')
     print('=============================================================================\n')
-    directory = input('Email directory : ').replace('\\', '/')
-    if directory[-1:] != '/':
-        directory += '/'
-    filename = input('Email filename (*.msg) : ')
-    if filename[-4:].upper() != '.MSG':
-        filename += '.msg'
-    file = '{}{}'.format(directory, filename)
+    # directory = input('Email directory : ').replace('\\', '/')
+    # ask directory
+    directory = os.path.abspath(input(' Email directory : '))
+    # if directory[-1:] != '/':
+    #     directory += '/'
+    # filename = input('Email filename (*.msg) : ')
+    # if filename[-4:].upper() != '.MSG':
+    #     filename += '.msg'
+    # file = '{}{}'.format(directory, filename)
     print('\n-----------------------------------------------------------------------------\n')
-    report = Readreport(file)
-    report.outputfile()
-    os.system('start {}'.format(report.inputfilename))
-    os.system('start {}'.format(report.outputfilename))
-    print('Opening files.\nProgram finished.\n\n\n')
+    # iterate through directory contents and generate report
+    for i in os.listdir(directory):
+        if '.MSG' in i.upper():
+            report = Readreport('{}/{}'.format(directory, i))
+            report.outputfile()
+            print(' Report created for {}.'.format(i))
+            # os.system('start {}'.format(report.inputfilename))
+            # os.system('start {}'.format(report.outputfilename))
+    print('\n-----------------------------------------------------------------------------\n\n Program finished.\n\n\n')
 
 
 # main, calling main loop
