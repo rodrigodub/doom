@@ -2,11 +2,11 @@
 # Doom
 # Script to adjust read an RFE email
 #
-# v1.10
+# v1.20
 # for ticket #
 #
 # Rodrigo Nobrega
-# 20180514-20180723
+# 20180514-20180829
 #################################################
 
 # import modules
@@ -25,7 +25,12 @@ OUTPUTRFE = 'Summary:\n{}\n' \
             'GIM Suite Version:\n{}\n\n' \
             'Description:\n{}\n{}\n\n' \
             'Workaround:\n{}\n\n' \
-            'Additional Comments:\n{}\n\n'
+            'Additional Comments:\n{}\n' \
+            '-----------------------------------------------------------------------------\n' \
+            'Impact level (rated by the customer):\n{}\n' \
+            'Impact description [Implication]:\n{}\n' \
+            'Level of impact to acQuire business:\n{}\n' \
+            'Quantify the impact:\n{}\n\n'
 OUTPUTBUG = 'Summary:\n{}\n' \
             '-----------------------------------------------------------------------------\n' \
             'acQuire Contact (Bug Owner):\n{}\n\n' \
@@ -87,7 +92,8 @@ class Readreport(object):
             except IndexError:
                 self.description = ''
             try:
-                self.workaround = self.returnstring('Workaround(s)\n\n\n\n \n\n\n\n[Implication]', 'Additional Comments')
+                # self.workaround = self.returnstring('Workaround(s)\n\n\n\n \n\n\n\n[Implication]', 'Additional Comments')
+                self.workaround = self.returnstring('Workaround(s) [Implication]', 'Additional Comments')
             except IndexError:
                 self.workaround = ''
             try:
@@ -162,7 +168,8 @@ class Readreport(object):
         f = open(r'{}'.format(self.outputfilename), 'w')
         if self.option == 'R':
             f.write(OUTPUTRFE.format(self.userstory, self.customer, self.site, self.user, self.role, self.owner, self.si,
-                                 self.version, self.userstory, self.description, self.workaround, self.additionalcomments))
+                                 self.version, self.userstory, self.description, self.workaround, self.additionalcomments,
+                                 self.impact1, self.impact2, self.impact3, self.impact4))
         elif self.option == 'B':
             f.write(OUTPUTBUG.format(self.userstory, self.owner, self.customer, self.database, self.userstory,
                                      self.description, self.replication, self.workaround, self.additionalcomments))
